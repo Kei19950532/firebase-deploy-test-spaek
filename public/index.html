@@ -1,65 +1,231 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<!DOCTYPE html><html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Form</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="./CSS/form.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://yubinbango.github.io/yubinbango-core/yubinbango-core.js"></script>
+  <style>
+    form {
+      width: 50%;
+      margin: 0 auto;
+    }
+    .form-row {
+      display: flex;
+      margin-top: 2px;
+    }
+    .form-row button {
+      flex: auto;
+      margin-left: 10px;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 1;
+      display: inline-block;
+      background: #f36565;
+      color: #fdfdfd;
+      padding: 4px 8px;
+      border-radius: 2px;
+      margin-left: .5em;
+      position: relative;
+      top: -1px;
+    }
+    .errors {
+      color: red;
+      margin: 10px 0 0;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.15.4/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.15.4/firebase-auth.js"></script>
-    <script defer src="/__/firebase/7.15.4/firebase-database.js"></script>
-    <script defer src="/__/firebase/7.15.4/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.15.4/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-analytics.js"></script>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyA_1y2k6braCWiWUdkvNq9UmukfNi6eXxs",
+    authDomain: "form-test-70cb8.firebaseapp.com",
+    databaseURL: "https://form-test-70cb8.firebaseio.com",
+    projectId: "form-test-70cb8",
+    storageBucket: "form-test-70cb8.appspot.com",
+    messagingSenderId: "1068915836859",
+    appId: "1:1068915836859:web:affaf1b567d1b8540ce69e",
+    measurementId: "G-473CN0JCRS"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.15.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/7.15.3/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
+<div class="container" id="app">
+  <main class="main">
+    <section class="block">
+      <h1 class="block-title">お問い合わせ</h1>
+      <div class="block-body">
+        <form action="" class="form">
+          <fieldset>
+            <div class="form-group">
+              <label for="name">お名前<span class="badge">必須</span></label>
+              <input type="text" name="name" id="name" v-model="name">
+              <errors :errors="errors.name"></errors>
+            </div>
+
+            <div class="form-group">
+              <label for="zip">郵便番号<span class="badge">必須</span></label>
+              <div class="form-row">
+                <input type="text" name="zip" id="zip" v-model="zip" placeholder="010-0000">
+                <button class="button-outline" @click.prevent="zipToAddress">住所を入力</button>
+              </div>
+              <errors :errors="errors.zip"></errors>
+            </div>
+
+            <div class="form-group">
+              <label for="prefecture">都道府県<span class="badge">必須</span></label>
+              <select name="prefecture" id="prefecture" v-model="prefecture">
+                <option value="">選択してください</option>
+                <option value="秋田県">秋田県</option>
+                <option value="東京都">東京都</option>
+              </select>
+              <errors :errors="errors.prefecture"></errors>
+            </div>
+
+            <div class="form-group">
+              <label for="address">市区町村・番地<span class="badge">必須</span></label>
+              <input type="text" name="address" id="address" v-model="address" placeholder="秋田市山王字〇〇">
+              <errors :errors="errors.address"></errors>
+            </div>
+
+            <div class="form-group">
+              <label for="building">ビル名等</label>
+              <input type="text" name="building" id="building" v-model="building" placeholder="〇〇ビル 4F">
+            </div>
+
+            <div class="form-group">
+              <label>興味のある音楽分野（最大3つまで）<span class="badge">必須</span></label>
+              <div class="form-row" v-for="(interest, index) in interests">
+                <input type="text" :name="'interest' + index" v-model="interests[index]">
+                <button class="button-outline" v-if="canRemoveInterests" @click.prevent="removeInterests(index)">削除</button>
+              </div>
+              <errors :errors="errors.interests"></errors>
+              <button class="button-outline" v-if="canAddInterests" @click.prevent="addInterests">追加</button>
+            </div>
+
+            <p>
+              <input class="button" type="submit" value="送信する" @click.prevent="validate">
+            </p>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  Vue.component('errors', {
+    props: ['errors'],
+    template: `
+      <div class="errors" v-if="errors">
+        <div class="error" v-for="error in errors">{{ error }}</div>
+      </div>
+    `
+  });
+
+  var vm = new Vue({
+    el: '#form',
+    data: {
+      name: '',
+      zip: '',
+      prefecture: '',
+      address: '',
+      building: '',
+      interests: [''],
+      interestsMaxCount: 3,
+      errors: {
+        name: [],
+        zip: [],
+        prefecture: [],
+        address: [],
+        interests: []
       }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+    },
+    methods: {
+      zipToAddress: function () {
+        var self = this;
+        new YubinBango.Core(this.zip, function (addr) {
+          if (addr.region_id) {
+            self.prefecture = addr.region;
+            self.address = addr.locality + addr.street;
+          } else {
+            self.errors.zip.push('該当する住所がありません');
+          }
+        });
+      },
+      addInterests: function () {
+        this.interests.push('');
+      },
+      removeInterests: function (index) {
+        this.interests.splice(index, 1);
+      },
+      validate: function () {
+        var errors = {
+          name: [],
+          zip: [],
+          prefecture: [],
+          address: [],
+          interests: []
+        };
+        if (!this.name　) {
+          errors.name.push('必須項目が入力されていません');
+        } else if(this.name.length > 20) {
+          errors.name.push('20文字以内で入力してください。');
         }
-      });
-    </script>
-  </body>
+        if (!this.zip) {
+          errors.zip.push('必須項目が入力されていません');
+        } else {
+          if (!this.zip.match(/\d{3}-?\d{4}/)) {
+            errors.zip.push('書式が正しくありません');
+          }
+        }
+        if (!this.prefecture) {
+          errors.prefecture.push('必須項目が入力されていません');
+        }
+        if (!this.address) {
+          errors.address.push('必須項目が入力されていません');
+        } else if(this.address.length > 40) {
+          errors.address.push('40文字以内で入力してください。');
+        }
+        if (this.interests.length <= 1 && !this.interests[0]) {
+          errors.interests.push('必須項目が入力されていません');
+        }
+        this.errors = errors;
+      }
+    },
+    computed: {
+      canAddInterests: function () {
+        return this.interests.length < this.interestsMaxCount;
+      },
+      canRemoveInterests: function () {
+        return this.interests.length > 1;
+      }
+    }
+  });
+</script>
+</body>
 </html>
